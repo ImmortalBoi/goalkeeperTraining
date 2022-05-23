@@ -16,11 +16,17 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("GUI TEST");
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
 	class Animation extends JPanel{
+		Goalkeeper goalkeeper = new Goalkeeper();
 		FootballBall ballInstance = new FootballBall();
+		int xPanel = getWidth();
+		int yPanel = getHeight();
+
+
 		Timer t = new Timer(30, new moveListener());
 		Animation(){
 			super.setBorder(BorderFactory.createEmptyBorder(500, 600, 500, 600));
@@ -28,22 +34,24 @@ public class GUI {
 			t.start();
 		}
 		public void paintComponent (Graphics g) {
-			frame.paintComponents(g);
-			Graphics g2 = (Graphics2D) g;
-			Ellipse2D.Double c = new Ellipse2D.Double(ballInstance.position[0],ballInstance.position[1],ballInstance.size[0],ballInstance.size[1]);
-			g2.setColor(Color.pink);
-			g2.fillOval(ballInstance.position[0],ballInstance.position[1],ballInstance.size[0],ballInstance.size[1]);
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			Image i = tk.getImage("src/goalkeeperTraining/goalkeeper poses/goalkeeperstanding.jpg");
+			g.drawImage(i,goalkeeper.position[0],goalkeeper.position[1],this);
 			return;
 		}
 		private class moveListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				ballInstance.generateVelocity();
-				if (ballInstance.position[0]>=0.0 && ballInstance.position[0] <=270.0) {
+				goalkeeper.generateVelocity();
+				boolean endFlag = false;
+				goalkeeper.changePosition(new int[]{900, 350});
+
+
+				if (ballInstance.position[0]>=0.0 && ballInstance.position[0] <=600) {
 					ballInstance.changePosition();
 				}
-				repaint();
+				frame.repaint();
 			}
-
 		}
 
 	}

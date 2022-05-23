@@ -1,21 +1,45 @@
 package goalkeeperTraining;
 
+import javax.swing.*;
 import java.util.Random;
 
 public class Goalkeeper {
 	Random r = new Random();
 	Double velocity[] = new Double[2];
-	Double size[] = {10.0,30.0};
-	Double position[] = {0.0,0.0};
-	
+	int size[] = {10,30};
+	int position[] = {590,350};
+
 	public void generateVelocity() {
-		velocity[0] = 135.0*(r.nextDouble()*2-1); //Equation used is: Goal width/2 - Keeper width/2 * 30m/s, where 30 m/s is the average speed of a ball in a penalty
-		velocity[1] = 60.0*r.nextDouble(); 		  //Same equation but with height
+		velocity[0] = 2.0; //x
+		velocity[1] = 2.0; //y
 	}
 	
-	public void changePosition() {
-		for (int i = 0; i < position.length; i++) {
-			position[i] += velocity[i];
+	public void changePosition(int[] endingPos) {
+		int[] range = {2,2};
+		System.out.println(this.position[0]);
+		if(isInRange(endingPos,range,0)){
+			System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
+			System.out.println("ENTERED LOOP");
+			if (this.position[0] > endingPos[0]) {
+				velocity[0] = -velocity[0];
+			}
+			this.position[0] += velocity[0];
 		}
+		if(isInRange(endingPos,range,1)){
+			System.out.println("XStart: " + this.position[1]+", XEnd: "+endingPos[1]);
+			System.out.println("ENTERED LOOP");
+			if (this.position[1] > endingPos[1]) {
+				velocity[1] = -velocity[1];
+			}
+			this.position[1] += velocity[1];
+		}
+	}
+
+	public boolean isInRange(int[] endingPos,int[] range,int xyFlag){
+
+		if(!(this.position[xyFlag] > endingPos[xyFlag]-range[xyFlag] && this.position[xyFlag] < endingPos[xyFlag]+range[xyFlag])){
+			return true;
+		}
+		return false;
 	}
 }
