@@ -11,8 +11,8 @@ public class GUI {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
-	public GUI() {
-		frame.add(new Animation(), BorderLayout.CENTER);
+	public GUI(Goalkeeper goalkeeper, FootballBall ballInstance) {
+		frame.add(new Animation(goalkeeper,ballInstance), BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("GUI TEST");
 		frame.pack();
@@ -21,14 +21,16 @@ public class GUI {
 	}
 
 	class Animation extends JPanel{
-		Goalkeeper goalkeeper = new Goalkeeper();
-		FootballBall ballInstance = new FootballBall();
+		Goalkeeper goalkeeper;
+		FootballBall ballInstance;
 		int xPanel = getWidth();
 		int yPanel = getHeight();
 
 
 		Timer t = new Timer(30, new moveListener());
-		Animation(){
+		Animation(Goalkeeper goalkeeper, FootballBall ballInstance){
+			this.goalkeeper = goalkeeper;
+			this.ballInstance = ballInstance;
 			super.setBorder(BorderFactory.createEmptyBorder(500, 600, 500, 600));
 			super.setLayout(new GridLayout(0, 1));
 			t.start();
@@ -57,7 +59,7 @@ public class GUI {
 	}
 
 	public static void main(String args[]) {
-		new GUI();
+//		new GUI();
 	}
 }
 

@@ -26,13 +26,14 @@ public class GoalkeeperGame {
 //		}
 		GoalkeeperGame game = new GoalkeeperGame();
 		Goalkeeper goalkeeper = new Goalkeeper();
+		FootballBall ballInstance = new FootballBall();
 		
-		game.playGame(goalkeeper);
+		game.playGame(goalkeeper,ballInstance);
 	}
-	private Boolean playGame(Goalkeeper goalkeeper) {
-		goalkeeper.generateVelocity();
-		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
-
+	private Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance) {
+//		goalkeeper.generateVelocity();
+//		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
+		GUI mainGui = new GUI(goalkeeper, ballInstance);
 		return true;
 	}
 }
