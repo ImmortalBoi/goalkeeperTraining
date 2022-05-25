@@ -35,7 +35,7 @@ public class GUI {
 		}
 		public void paintComponent (Graphics g) {
 			Toolkit tk = Toolkit.getDefaultToolkit();
-			Image i = tk.getImage("src/goalkeeperTraining/goalkeeper poses/goalkeeperstanding.jpg");
+			Image i = tk.getImage("src/goalkeeperTraining/goalkeeper poses/goalkeeperstanding.png");
 			g.drawImage(i,goalkeeper.position[0],goalkeeper.position[1],this);
 			return;
 		}
