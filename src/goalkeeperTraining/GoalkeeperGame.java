@@ -1,6 +1,8 @@
 package goalkeeperTraining;
 
 
+import javax.swing.*;
+
 class MultithreadingDemo extends Thread {
     public void run()
     {
@@ -33,7 +35,9 @@ public class GoalkeeperGame {
 	private Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance) {
 //		goalkeeper.generateVelocity();
 //		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
+//		Timer t = new Timer(10, new GUI.Animation.moveListener());
 		GUI mainGui = new GUI(goalkeeper, ballInstance);
+
 		return true;
 	}
 }

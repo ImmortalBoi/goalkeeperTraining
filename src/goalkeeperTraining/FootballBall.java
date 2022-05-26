@@ -12,14 +12,35 @@ public class FootballBall {
     public void generateVelocity() {
 //        velocity[0] = 1.350*(r.nextDouble()*2-1); //Equation used is: Goal width/2 - Keeper width/2 * 30m/s, where 30 m/s is the average speed of a ball in a penalty
 //        velocity[1] = 0.600*r.nextDouble(); 		  //Same equation but with
-        velocity[0] = 0.0;
-        velocity[1] = 0.0;
+        velocity[0] = 5.0;
+        velocity[1] = 5.0;
     }
 
-    public void changePosition() {
-        for (int i = 0; i < position.length; i++) {
-            position[i] += velocity[i];
+    public void changePosition(int[] endingPos) {
+        int[] range = {5,5};
+        System.out.println(this.position[0]);
+        if(!isInRange(endingPos,range,0)){
+            System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
+            System.out.println("ENTERED LOOP");
+            if (this.position[0] > endingPos[0]) {
+                velocity[0] = -velocity[0];
+            }
+            this.position[0] += velocity[0];
+        }
+        if(!isInRange(endingPos,range,1)){
+            System.out.println("XStart: " + this.position[1]+", XEnd: "+endingPos[1]);
+            System.out.println("ENTERED LOOP");
+            if (this.position[1] > endingPos[1]) {
+                velocity[1] = -velocity[1];
+            }
+            this.position[1] += velocity[1];
         }
     }
 
+    public boolean isInRange(int[] endingPos,int[] range,int xyFlag){
+        if(!(this.position[xyFlag] > endingPos[xyFlag]-range[xyFlag] && this.position[xyFlag] < endingPos[xyFlag]+range[xyFlag])){
+            return false;
+        }
+        return true;
+    }
 }

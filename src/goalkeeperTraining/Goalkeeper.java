@@ -17,7 +17,7 @@ public class Goalkeeper {
 	public void changePosition(int[] endingPos) {
 		int[] range = {2,2};
 		System.out.println(this.position[0]);
-		if(isInRange(endingPos,range,0)){
+		if(!isInRange(endingPos,range,0)){
 			System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
 			System.out.println("ENTERED LOOP");
 			if (this.position[0] > endingPos[0]) {
@@ -25,7 +25,7 @@ public class Goalkeeper {
 			}
 			this.position[0] += velocity[0];
 		}
-		if(isInRange(endingPos,range,1)){
+		if(!isInRange(endingPos,range,1)){
 			System.out.println("XStart: " + this.position[1]+", XEnd: "+endingPos[1]);
 			System.out.println("ENTERED LOOP");
 			if (this.position[1] > endingPos[1]) {
@@ -38,8 +38,8 @@ public class Goalkeeper {
 	public boolean isInRange(int[] endingPos,int[] range,int xyFlag){
 
 		if(!(this.position[xyFlag] > endingPos[xyFlag]-range[xyFlag] && this.position[xyFlag] < endingPos[xyFlag]+range[xyFlag])){
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 }
