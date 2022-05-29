@@ -7,7 +7,7 @@ public class FootballBall {
     Random r = new Random();
     Double velocity[] = new Double[2];
     int size[] = {10,10};
-    int position[] = {590,600};
+    int position[] = {700,600};
 
     public void generateVelocity() {
 //        velocity[0] = 1.350*(r.nextDouble()*2-1); //Equation used is: Goal width/2 - Keeper width/2 * 30m/s, where 30 m/s is the average speed of a ball in a penalty
@@ -16,7 +16,7 @@ public class FootballBall {
         velocity[1] = 5.0;
     }
 
-    public void changePosition(int[] endingPos) {
+    public void changePosition(int[] endingPos) { //change into better movement using the line equation
         int[] range = {5,5};
         System.out.println(this.position[0]);
         if(!isInRange(endingPos,range,0)){

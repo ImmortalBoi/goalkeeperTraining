@@ -2,15 +2,26 @@ package goalkeeperTraining;
 
 
 import javax.swing.*;
+import java.util.concurrent.Phaser;
 
 class MultithreadingDemo extends Thread {
+	GoalkeeperGame game = new GoalkeeperGame();
+	Goalkeeper goalkeeper = new Goalkeeper();
+	FootballBall ballInstance = new FootballBall();
+	MultithreadingDemo(String name){
+		super(name);
+	}
     public void run()
     {
         try {
+
+			game.playGame(goalkeeper,ballInstance);
             // Displaying the thread that is running
             System.out.println(
-                "Thread " + Thread.currentThread().getId()
-                + " is running");
+					Thread.currentThread().getName()
+                + " is Shooting");
+			GoalkeeperGame.phasers[1].arrive();
+
         }
         catch (Exception e) {
             // Throwing an exception
@@ -20,21 +31,25 @@ class MultithreadingDemo extends Thread {
 }
 public class GoalkeeperGame {
 	Double goalSize[] = {100.0,50.0};
+	static Phaser[] phasers = new Phaser[4];
 	public static void main(String[] args) {
-//		int n = 4;
-//		for (int i = 0; i < n; i++) {
-//			MultithreadingDemo objectDemo = new MultithreadingDemo();
-//			objectDemo.start();
-//		}
+		MultithreadingDemo p1 = new MultithreadingDemo("Player 1");
+		MultithreadingDemo p2 = new MultithreadingDemo("Player 2");
+		MultithreadingDemo p3 = new MultithreadingDemo("Player 3");
+		MultithreadingDemo p4 = new MultithreadingDemo("Player 4");
+		for (int i = 0; i < 4; i++) {
+			phasers[i] = new Phaser(1);
+		}
 		GoalkeeperGame game = new GoalkeeperGame();
 		Goalkeeper goalkeeper = new Goalkeeper();
 		FootballBall ballInstance = new FootballBall();
-		
-		game.playGame(goalkeeper,ballInstance);
+		p1.start();
+		phasers[1].awaitAdvance(1);
+		p2.start();
 	}
-	private Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance) {
-//		goalkeeper.generateVelocity();
-//		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
+	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance) {
+		goalkeeper.generateVelocity();
+		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
 //		Timer t = new Timer(10, new GUI.Animation.moveListener());
 		GUI mainGui = new GUI(goalkeeper, ballInstance);
 
