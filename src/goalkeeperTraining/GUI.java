@@ -19,19 +19,18 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	class Animation extends JPanel{
-		static Goalkeeper goalkeeper;
-		static FootballBall ballInstance;
-		static boolean movementOne = true;
-		static boolean movementTwo = false;
-		static boolean movementThree = false;
-		static Timer t = new Timer(10, new moveListener());
+		Goalkeeper goalkeeper;
+		FootballBall ballInstance;
+		boolean movementOne = true;
+		boolean movementTwo = false;
+		boolean movementThree = false;
+		Timer t = new Timer(10, new moveListener());
 		Animation(Goalkeeper goalkeeper, FootballBall ballInstance){
 			this.goalkeeper = goalkeeper;
 			this.ballInstance = ballInstance;
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			super.setLayout(new GridLayout(0, 1));
 			t.start();
-
 		}
 		public void paintComponent (Graphics g) {
 			Toolkit tk = Toolkit.getDefaultToolkit();
@@ -41,14 +40,12 @@ public class GUI {
 			g.drawImage(backgroundImage,500,100,this);
 			g.drawImage(spriteGoalKeeperStanding,goalkeeper.position[0],goalkeeper.position[1],this);
 			g.drawImage(ballImage,ballInstance.position[0],ballInstance.position[1],this);
-			System.out.println(getWidth());
-			System.out.println(getHeight());
 			return;
 		}
-		public static class moveListener implements ActionListener {
+		private class moveListener implements ActionListener {
 			Random rnd = new Random();
-			int gk[] = {rnd.nextInt(600,900),350};
-			int fb[] = {rnd.nextInt(600,900),rnd.nextInt(350,450)};
+			int gk[] = {rnd.nextInt(600,1000),350};
+			int fb[] = {rnd.nextInt(600,1000),rnd.nextInt(350,450)};
 			public void actionPerformed(ActionEvent e) {
 				ballInstance.generateVelocity();
 				goalkeeper.generateVelocity();
@@ -69,15 +66,9 @@ public class GUI {
 					}
 				}
 				if (movementThree){
-					gk = new int[]{640, 350};
-					fb = new int[]{700,600};
-					goalkeeper.changePosition(gk);
-					ballInstance.changePosition(fb);
-					if(!(ballInstance.isInRange(fb, new int[]{2, 2}, 0) && ballInstance.isInRange(fb, new int[]{2, 2}, 1)) && !(goalkeeper.isInRange(gk, new int[]{2, 2}, 0) && goalkeeper.isInRange(gk, new int[]{2, 2}, 1))){
-						movementOne = true;
-						movementTwo = false;
-						movementThree = false;
-					}
+					System.out.println("Three");
+					goalkeeper.changePosition(new int[]{720,350});
+					ballInstance.changePosition(new int[]{700, 600});
 				}
 				frame.repaint();
 			}

@@ -8,6 +8,7 @@ class MultithreadingDemo extends Thread {
 	GoalkeeperGame game = new GoalkeeperGame();
 	Goalkeeper goalkeeper = new Goalkeeper();
 	FootballBall ballInstance = new FootballBall();
+	PlayersMovement playersMovement = new PlayersMovement();
 	MultithreadingDemo(String name){
 		super(name);
 	}
@@ -15,7 +16,7 @@ class MultithreadingDemo extends Thread {
     {
         try {
 
-			game.playGame(goalkeeper,ballInstance);
+			game.playGame(goalkeeper,ballInstance,playersMovement);
             // Displaying the thread that is running
             System.out.println(
 					Thread.currentThread().getName()
@@ -40,17 +41,10 @@ public class GoalkeeperGame {
 		for (int i = 0; i < 4; i++) {
 			phasers[i] = new Phaser(1);
 		}
-		GoalkeeperGame game = new GoalkeeperGame();
-		Goalkeeper goalkeeper = new Goalkeeper();
-		FootballBall ballInstance = new FootballBall();
 		p1.start();
-		phasers[1].awaitAdvance(1);
-		p2.start();
 	}
-	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance) {
-		goalkeeper.generateVelocity();
+	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance,PlayersMovement playersMovement) {
 		System.out.println("goalKeeper Vx: "+goalkeeper.velocity[0]+"\ngoalkeeper Vy: "+goalkeeper.velocity[1]);
-//		Timer t = new Timer(10, new GUI.Animation.moveListener());
 		GUI mainGui = new GUI(goalkeeper, ballInstance);
 
 		return true;

@@ -16,7 +16,6 @@ public class Goalkeeper {
 	
 	public void changePosition(int[] endingPos) {
 		int[] range = {2,2};
-		System.out.println(this.position[0]);
 		if(!isInRange(endingPos,range,0)){
 			System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
 			System.out.println("ENTERED LOOP");
