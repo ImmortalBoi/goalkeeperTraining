@@ -4,10 +4,20 @@ package goalkeeperTraining;
 import java.util.concurrent.Phaser;
 
 class MultithreadingDemo extends Thread {
-
-	MultithreadingDemo(String name){
+	Goalkeeper goalkeeper;
+	FootballBall ballInstance;
+	GUI gui;
+	PlayersMovement playersMovement;
+	
+	MultithreadingDemo(String name,Goalkeeper gk,FootballBall bi,GUI gui){
 		super(name);
+		goalkeeper = gk;
+		ballInstance = bi;
+		this.playersMovement = new PlayersMovement(gk,bi);
+		this.gui = gui;
+		
 	}
+	
     public void run()
     {
         try {
@@ -15,7 +25,7 @@ class MultithreadingDemo extends Thread {
             System.out.println(
 					Thread.currentThread().getName()
                 + " is Shooting");
-			game.playGame(goalkeeper,ballInstance);
+            gui.generateAnimation();
         }
         catch (Exception e) {
             // Throwing an exception
@@ -25,11 +35,20 @@ class MultithreadingDemo extends Thread {
 }
 public class GoalkeeperGame {
 	static Phaser phaser = new Phaser(1);
-	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance,PlayersMovement playersMovement) {
-		MultithreadingDemo p1 = new MultithreadingDemo("Player 1");
-		MultithreadingDemo p2 = new MultithreadingDemo("Player 2");
-		MultithreadingDemo p3 = new MultithreadingDemo("Player 3");
-		MultithreadingDemo p4 = new MultithreadingDemo("Player 4");
+	
+	public static void main(String[] args) {
+		Goalkeeper goalkeeper = new Goalkeeper();
+		FootballBall ballInstance = new FootballBall();
+		GoalkeeperGame game = new GoalkeeperGame();
+		GUI mainGui = new GUI(goalkeeper, ballInstance);
+		game.playGame(goalkeeper,ballInstance,mainGui);
+	}
+	
+	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance, GUI mainGui) {
+		MultithreadingDemo p1 = new MultithreadingDemo("Player 1",goalkeeper,ballInstance, mainGui);
+		MultithreadingDemo p2 = new MultithreadingDemo("Player 2",goalkeeper,ballInstance, mainGui);
+		MultithreadingDemo p3 = new MultithreadingDemo("Player 3",goalkeeper,ballInstance, mainGui);
+		MultithreadingDemo p4 = new MultithreadingDemo("Player 4",goalkeeper,ballInstance, mainGui);
 
 		try {
 			p1.start();
@@ -50,14 +69,9 @@ public class GoalkeeperGame {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		GUI mainGui = new GUI(goalkeeper, ballInstance);
+		
 		return true;
 	}
-	public static void main(String[] args) {
-		Goalkeeper goalkeeper = new Goalkeeper();
-		FootballBall ballInstance = new FootballBall();
-		PlayersMovement playersMovement = new PlayersMovement(goalkeeper,ballInstance);
-		GoalkeeperGame game = new GoalkeeperGame();
-		game.playGame(goalkeeper,ballInstance,playersMovement);
-	}
+	
+
 }

@@ -8,13 +8,19 @@ import javax.swing.*;
 public class GUI {
 	static JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
+	Goalkeeper goalkeeper;
+	FootballBall footballBall;
 	public GUI(Goalkeeper goalkeeper, FootballBall ballInstance) {
+		this.goalkeeper = goalkeeper;
+		this.footballBall = ballInstance;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new Animation(goalkeeper,ballInstance), BorderLayout.CENTER);
 		frame.setTitle("GUI TEST");
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+	public void generateAnimation() {
+		frame.add(new Animation(goalkeeper,footballBall), BorderLayout.CENTER);
 	}
 	class Animation extends JPanel{
 		Goalkeeper goalkeeper;
