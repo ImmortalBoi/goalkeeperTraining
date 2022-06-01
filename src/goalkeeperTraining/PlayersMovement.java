@@ -6,8 +6,8 @@ public class PlayersMovement {
     boolean movementOne = true;
     boolean movementTwo = false;
     Random rnd = new Random();
-    int gk[] = {rnd.nextInt(600,900),350};
-    int fb[] = {rnd.nextInt(600,900),rnd.nextInt(350,450)};
+    int gk[] = {rnd.nextInt(900-600)+600,350};
+    int fb[] = {rnd.nextInt(900-600)+600,rnd.nextInt(450-350)+350};
     public void movement(Goalkeeper goalkeeper,FootballBall ballInstance){
         if (movementOne){
             goalkeeper.changePosition(gk);

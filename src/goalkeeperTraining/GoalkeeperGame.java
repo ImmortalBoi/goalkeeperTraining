@@ -1,7 +1,6 @@
 package goalkeeperTraining;
 
 
-import javax.swing.*;
 import java.util.concurrent.Phaser;
 
 class MultithreadingDemo extends Thread {
