@@ -10,12 +10,12 @@ public class Goalkeeper {
 	int position[] = {720,350};
 
 	public void generateVelocity() {
-		velocity[0] = 2.0; //x
-		velocity[1] = 2.0; //y
+		velocity[0] = 4.0; //x
+		velocity[1] = 4.0; //y
 	}
 	
 	public void changePosition(int[] endingPos) {
-		int[] range = {2,2};
+		int[] range = {4,4};
 		if(!isInRange(endingPos,range,0)){
 			System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
 			System.out.println("ENTERED LOOP");
