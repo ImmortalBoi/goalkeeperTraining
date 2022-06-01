@@ -1,6 +1,8 @@
 package goalkeeperTraining;
 
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Phaser;
 
 class MultithreadingDemo extends Thread {
@@ -34,8 +36,11 @@ class MultithreadingDemo extends Thread {
     }
 }
 public class GoalkeeperGame {
-	static Phaser phaser = new Phaser(1);
-	
+	public static CyclicBarrier barrier = new CyclicBarrier(2);
+	MultithreadingDemo p1;
+	MultithreadingDemo p2;
+	MultithreadingDemo p3;
+	MultithreadingDemo p4;
 	public static void main(String[] args) {
 		Goalkeeper goalkeeper = new Goalkeeper();
 		FootballBall ballInstance = new FootballBall();
@@ -43,33 +48,38 @@ public class GoalkeeperGame {
 		GUI mainGui = new GUI(goalkeeper, ballInstance);
 		game.playGame(goalkeeper,ballInstance,mainGui);
 	}
-	
+	public void terminateThreads(){
+		p1.interrupt();
+		p2.interrupt();
+		p3.interrupt();
+		p4.interrupt();
+	}
 	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance, GUI mainGui) {
-		MultithreadingDemo p1 = new MultithreadingDemo("Player 1",goalkeeper,ballInstance, mainGui);
-		MultithreadingDemo p2 = new MultithreadingDemo("Player 2",goalkeeper,ballInstance, mainGui);
-		MultithreadingDemo p3 = new MultithreadingDemo("Player 3",goalkeeper,ballInstance, mainGui);
-		MultithreadingDemo p4 = new MultithreadingDemo("Player 4",goalkeeper,ballInstance, mainGui);
+		p1 = new MultithreadingDemo("Player 1",goalkeeper,ballInstance, mainGui);
+		p2 = new MultithreadingDemo("Player 2",goalkeeper,ballInstance, mainGui);
+		p3 = new MultithreadingDemo("Player 3",goalkeeper,ballInstance, mainGui);
+		p4 = new MultithreadingDemo("Player 4",goalkeeper,ballInstance, mainGui);
 
 		try {
 			p1.start();
-			phaser.awaitAdvance(p1.playersMovement.arrived);
-			p1.join();
+			barrier.await();
+			p1.interrupt();
 			p2.start();
-			Thread.sleep(1000);
-			phaser.awaitAdvance(p2.playersMovement.arrived);
-			p2.join();
+			barrier.await();
+			p2.interrupt();
 			p3.start();
-			Thread.sleep(1000);
-			phaser.awaitAdvance(p3.playersMovement.arrived);
-			p3.join();
+			barrier.await();
+			p3.interrupt();
 			p4.start();
-			Thread.sleep(1000);
-			phaser.awaitAdvance(p4.playersMovement.arrived);
-			p4.join();
+			barrier.await();
+			p4.interrupt();
+			return true;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		} catch (BrokenBarrierException e) {
+			e.printStackTrace();
 		}
-		
+
 		return true;
 	}
 	

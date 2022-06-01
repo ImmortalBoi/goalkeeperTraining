@@ -1,5 +1,6 @@
 package goalkeeperTraining;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
 import javax.swing.*;
 
 
@@ -52,7 +53,13 @@ public class PlayersMovement{
                 fb = temp2;
                 movementOne = true;
                 movementTwo = false;
-                arrived = GoalkeeperGame.phaser.arrive();
+                try {
+                    arrived = GoalkeeperGame.barrier.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
                 timer.stop();
             }
         }
