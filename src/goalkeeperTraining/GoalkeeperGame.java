@@ -1,16 +1,16 @@
 package goalkeeperTraining;
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Phaser;
 
 class MultithreadingDemo extends Thread {
 	Goalkeeper goalkeeper;
 	FootballBall ballInstance;
 	GUI gui;
 	PlayersMovement playersMovement;
-	
 	MultithreadingDemo(String name,Goalkeeper gk,FootballBall bi,GUI gui){
 		super(name);
 		goalkeeper = gk;
@@ -27,6 +27,7 @@ class MultithreadingDemo extends Thread {
             System.out.println(
 					Thread.currentThread().getName()
                 + " is Shooting");
+			gui.playerView.setText(Thread.currentThread().getName() + " is Shooting");
             gui.generateAnimation();
         }
         catch (Exception e) {
@@ -46,7 +47,9 @@ public class GoalkeeperGame {
 		FootballBall ballInstance = new FootballBall();
 		GoalkeeperGame game = new GoalkeeperGame();
 		GUI mainGui = new GUI(goalkeeper, ballInstance);
-		game.playGame(goalkeeper,ballInstance,mainGui);
+		while (true) {
+			game.playGame(goalkeeper, ballInstance, mainGui);
+		}
 	}
 	public void terminateThreads(){
 		p1.interrupt();
@@ -62,16 +65,20 @@ public class GoalkeeperGame {
 
 		try {
 			p1.start();
+			mainGui.player1Score.setText(p1.getName()+" Score: "+p1.playersMovement.isScored());
 			barrier.await();
 			p1.interrupt();
 			p2.start();
 			barrier.await();
+			mainGui.player2Score.setText(p2.getName()+" Score: "+p2.playersMovement.isScored());
 			p2.interrupt();
 			p3.start();
 			barrier.await();
+			mainGui.player3Score.setText(p3.getName()+" Score: "+p3.playersMovement.isScored());
 			p3.interrupt();
 			p4.start();
 			barrier.await();
+			mainGui.player4Score.setText(p4.getName()+" Score: "+p4.playersMovement.isScored());
 			p4.interrupt();
 			return true;
 		} catch (InterruptedException e) {
@@ -79,9 +86,6 @@ public class GoalkeeperGame {
 		} catch (BrokenBarrierException e) {
 			e.printStackTrace();
 		}
-
 		return true;
 	}
-	
-
 }

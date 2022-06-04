@@ -10,6 +10,8 @@ public class PlayersMovement{
     boolean movementOne = true;
     boolean movementTwo = false;
     int arrived;
+    int thScore;
+    boolean scored;
     PlayersMovement(Goalkeeper gk,FootballBall fb){
         goalkeeper = gk;
         ballInstance = fb;
@@ -36,7 +38,12 @@ public class PlayersMovement{
             System.out.println(b);
 
             if ((a && b)) {
-                System.out.println("Entered");
+                System.out.println("GK x = "+goalkeeper.position[0]);
+                System.out.println("GK y = "+goalkeeper.position[1]);
+                System.out.println("FB x = "+ballInstance.position[0]);
+                System.out.println("FB y = "+ballInstance.position[1]);
+                scored = isScored();
+                System.out.println("Entered1");
                 movementOne = false;
                 movementTwo = true;
             }
@@ -64,6 +71,14 @@ public class PlayersMovement{
             }
         }
         System.out.println("Current Movement is :" + ((movementOne==true && movementTwo==false)?"Movement One":"Movement two"));
+    }
+ public boolean isScored(){
+     boolean a = (goalkeeper.isInRange(ballInstance.position,goalkeeper.size, 0) && goalkeeper.isInRange(ballInstance.position, goalkeeper.size, 1));
+     boolean b = (ballInstance.isInRange(goalkeeper.position, ballInstance.size, 0) && ballInstance.isInRange(goalkeeper.position, ballInstance.size, 1));
+     if (a && b){
+         return false;
+     }
+     return true;
     }
 }
 

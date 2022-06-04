@@ -6,7 +6,7 @@ import java.util.Random;
 public class FootballBall {
     Random r = new Random();
     Double velocity[] = new Double[2];
-    int size[] = {10,10};
+    int size[] = {53,53};
     int position[] = {700,600};
 
     public void generateVelocity() {

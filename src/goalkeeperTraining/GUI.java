@@ -8,6 +8,11 @@ import javax.swing.*;
 public class GUI {
 	static JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
+	JLabel playerView = new JLabel();
+	JLabel player1Score = new JLabel("Player 1 Score: 0");
+	JLabel player2Score = new JLabel("Player 2 Score: 0");
+	JLabel player3Score = new JLabel("Player 3 Score: 0");
+	JLabel player4Score = new JLabel("Player 4 Score: 0");
 	Goalkeeper goalkeeper;
 	FootballBall footballBall;
 
@@ -21,6 +26,11 @@ public class GUI {
 //				throw new Exception("Exception message");
 //			}
 //		});
+		frame.add(playerView);
+		frame.add(player1Score);
+		frame.add(player2Score);
+		frame.add(player3Score);
+		frame.add(player4Score);
 		frame.setTitle("GUI TEST");
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -29,6 +39,17 @@ public class GUI {
 	}
 	public void generateAnimation() {
 		frame.add(new Animation(goalkeeper,footballBall), BorderLayout.CENTER);
+		playerView.setFont(new Font("Arial",Font.BOLD,36));
+		player1Score.setFont(new Font("Arial",Font.BOLD,36));
+		player2Score.setFont(new Font("Arial",Font.BOLD,36));
+		player3Score.setFont(new Font("Arial",Font.BOLD,36));
+		player4Score.setFont(new Font("Arial",Font.BOLD,36));
+		Dimension playerSize = playerView.getPreferredSize();
+		player1Score.setBounds(0,100,playerSize.width,playerSize.height);
+		player2Score.setBounds(0,200,playerSize.width,playerSize.height);
+		player3Score.setBounds(0,300,playerSize.width,playerSize.height);
+		player4Score.setBounds(0,400,playerSize.width,playerSize.height);
+		playerView.setSize(playerSize);
 		frame.repaint();
 	}
 	class Animation extends JPanel{

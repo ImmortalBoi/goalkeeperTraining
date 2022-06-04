@@ -6,7 +6,7 @@ import java.util.Random;
 public class Goalkeeper {
 	Random r = new Random();
 	Double velocity[] = new Double[2];
-	int size[] = {10,30};
+	int size[] = {123,158};
 	int position[] = {720,350};
 
 	public void generateVelocity() {
