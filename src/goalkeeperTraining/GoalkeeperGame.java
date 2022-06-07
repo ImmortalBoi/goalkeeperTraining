@@ -3,15 +3,16 @@ package goalkeeperTraining;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 class MultithreadingDemo extends Thread {
 	Goalkeeper goalkeeper;
 	FootballBall ballInstance;
-	GUI gui;
+	BetterGUI gui;
 	PlayersMovement playersMovement;
-	MultithreadingDemo(String name,Goalkeeper gk,FootballBall bi,GUI gui){
+	MultithreadingDemo(String name,Goalkeeper gk,FootballBall bi,BetterGUI gui){
 		super(name);
 		goalkeeper = gk;
 		ballInstance = bi;
@@ -19,7 +20,6 @@ class MultithreadingDemo extends Thread {
 		this.gui = gui;
 		
 	}
-	
     public void run()
     {
         try {
@@ -28,7 +28,8 @@ class MultithreadingDemo extends Thread {
 					Thread.currentThread().getName()
                 + " is Shooting");
 			gui.playerView.setText(Thread.currentThread().getName() + " is Shooting");
-            gui.generateAnimation();
+			gui.frame.add(gui.playerView);
+            gui.runAutoPlay();
         }
         catch (Exception e) {
             // Throwing an exception
@@ -42,22 +43,36 @@ public class GoalkeeperGame {
 	MultithreadingDemo p2;
 	MultithreadingDemo p3;
 	MultithreadingDemo p4;
-	public static void main(String[] args) {
-		Goalkeeper goalkeeper = new Goalkeeper();
-		FootballBall ballInstance = new FootballBall();
-		GoalkeeperGame game = new GoalkeeperGame();
-		GUI mainGui = new GUI(goalkeeper, ballInstance);
-		while (true) {
-			game.playGame(goalkeeper, ballInstance, mainGui);
-		}
-	}
 	public void terminateThreads(){
 		p1.interrupt();
 		p2.interrupt();
 		p3.interrupt();
 		p4.interrupt();
 	}
-	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance, GUI mainGui) {
+	public static void main(String[] args) throws InterruptedException {
+		Goalkeeper goalkeeper = new Goalkeeper();
+		FootballBall ballInstance = new FootballBall();
+		GoalkeeperGame game = new GoalkeeperGame();
+		BetterGUI gui = new BetterGUI(goalkeeper,ballInstance);
+		while (BetterGUI.state == BetterGUI.STATE.MENU) {
+				gui.runGUI();
+				Thread.sleep(3000);
+		}
+//		GUI autoGameGUI = new GUI(goalkeeper, ballInstance);
+		if (BetterGUI.state == BetterGUI.STATE.AUTOPLAY) {
+			while (true) {
+				game.playGame(goalkeeper, ballInstance, gui);
+			}
+		}
+		if (BetterGUI.state == BetterGUI.STATE.FREEPLAY){
+			gui.freePlayGui();
+		}
+		if (BetterGUI.state == BetterGUI.STATE.Quit){
+			game.terminateThreads();
+			return;
+		}
+	}
+	public Boolean playGame(Goalkeeper goalkeeper,FootballBall ballInstance, BetterGUI mainGui) {
 		p1 = new MultithreadingDemo("Player 1",goalkeeper,ballInstance, mainGui);
 		p2 = new MultithreadingDemo("Player 2",goalkeeper,ballInstance, mainGui);
 		p3 = new MultithreadingDemo("Player 3",goalkeeper,ballInstance, mainGui);
@@ -65,20 +80,20 @@ public class GoalkeeperGame {
 
 		try {
 			p1.start();
-			mainGui.player1Score.setText(p1.getName()+" Score: "+p1.playersMovement.isScored());
+			mainGui.player1Score.setText(p1.getName()+" Score: "+p1.playersMovement.thScore);
 			barrier.await();
 			p1.interrupt();
 			p2.start();
 			barrier.await();
-			mainGui.player2Score.setText(p2.getName()+" Score: "+p2.playersMovement.isScored());
+			mainGui.player2Score.setText(p2.getName()+" Score: "+p2.playersMovement.thScore);
 			p2.interrupt();
 			p3.start();
 			barrier.await();
-			mainGui.player3Score.setText(p3.getName()+" Score: "+p3.playersMovement.isScored());
+			mainGui.player3Score.setText(p3.getName()+" Score: "+p3.playersMovement.thScore);
 			p3.interrupt();
 			p4.start();
 			barrier.await();
-			mainGui.player4Score.setText(p4.getName()+" Score: "+p4.playersMovement.isScored());
+			mainGui.player4Score.setText(p4.getName()+" Score: "+p4.playersMovement.thScore);
 			p4.interrupt();
 			return true;
 		} catch (InterruptedException e) {

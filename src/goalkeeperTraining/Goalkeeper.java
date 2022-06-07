@@ -7,7 +7,7 @@ public class Goalkeeper {
 	Random r = new Random();
 	Double velocity[] = new Double[2];
 	int size[] = {123,158};
-	int position[] = {720,350};
+	int position[] = {400,250};
 
 	public void generateVelocity() {
 		velocity[0] = 4.0; //x

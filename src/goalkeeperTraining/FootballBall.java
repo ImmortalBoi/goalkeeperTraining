@@ -7,7 +7,7 @@ public class FootballBall {
     Random r = new Random();
     Double velocity[] = new Double[2];
     int size[] = {53,53};
-    int position[] = {700,600};
+    int position[] = {430,500};
 
     public void generateVelocity() {
         velocity[0] = 5.0;
