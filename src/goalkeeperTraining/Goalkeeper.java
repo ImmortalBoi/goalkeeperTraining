@@ -6,7 +6,7 @@ import java.util.Random;
 public class Goalkeeper {
 	Random r = new Random();
 	Double velocity[] = new Double[2];
-	int size[] = {123,158};
+	int size[] = {123,185};
 	int position[] = {400,250};
 
 	public void generateVelocity() {
@@ -20,7 +20,7 @@ public class Goalkeeper {
 			System.out.println("XStart: " + this.position[0]+", XEnd: "+endingPos[0]);
 			System.out.println("ENTERED LOOP");
 			if (this.position[0] > endingPos[0]) {
-				velocity[0] = -velocity[0];
+				velocity[0] = -velocity[0]; //velocity = -4;
 			}
 			this.position[0] += velocity[0];
 		}

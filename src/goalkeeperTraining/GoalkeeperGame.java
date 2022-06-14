@@ -27,8 +27,7 @@ class MultithreadingDemo extends Thread {
             System.out.println(
 					Thread.currentThread().getName()
                 + " is Shooting");
-			gui.playerView.setText(Thread.currentThread().getName() + " is Shooting");
-			gui.frame.add(gui.playerView);
+			gui.ingameText = (Thread.currentThread().getName() + " is Shooting");
             gui.runAutoPlay();
         }
         catch (Exception e) {
@@ -68,6 +67,7 @@ public class GoalkeeperGame {
 			gui.freePlayGui();
 		}
 		if (BetterGUI.state == BetterGUI.STATE.Quit){
+			gui.frame.dispose();
 			game.terminateThreads();
 			return;
 		}
@@ -80,20 +80,16 @@ public class GoalkeeperGame {
 
 		try {
 			p1.start();
-			mainGui.player1Score.setText(p1.getName()+" Score: "+p1.playersMovement.thScore);
 			barrier.await();
 			p1.interrupt();
 			p2.start();
 			barrier.await();
-			mainGui.player2Score.setText(p2.getName()+" Score: "+p2.playersMovement.thScore);
 			p2.interrupt();
 			p3.start();
 			barrier.await();
-			mainGui.player3Score.setText(p3.getName()+" Score: "+p3.playersMovement.thScore);
 			p3.interrupt();
 			p4.start();
 			barrier.await();
-			mainGui.player4Score.setText(p4.getName()+" Score: "+p4.playersMovement.thScore);
 			p4.interrupt();
 			return true;
 		} catch (InterruptedException e) {

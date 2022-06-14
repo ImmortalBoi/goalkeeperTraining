@@ -21,8 +21,10 @@ public class PlayersMovement {
         ballInstance = fb;
     }
     Random rnd = new Random();
-    int gk[] = {rnd.nextInt(800 - 200) + 200,250};
-    int fb[] = {rnd.nextInt(800- 200) + 200,rnd.nextInt(450 - 250) + 250};
+    int gk[] = {rnd.nextInt(700 - 100) + 100,250};
+    int fb[] = {rnd.nextInt(700- 100) + 100,rnd.nextInt(350 - 250) + 250};
+    int fbstart[] = {rnd.nextInt(800- 100) + 100,rnd.nextInt(450 - 250) + 250};
+    int reportFlag = 0;
     public void movement(Goalkeeper goalkeeper, FootballBall ballInstance, Timer timer) {
         ballInstance.generateVelocity();
         goalkeeper.generateVelocity();
@@ -46,20 +48,28 @@ public class PlayersMovement {
                 System.out.println("GK y = "+goalkeeper.position[1]);
                 System.out.println("FB x = "+ballInstance.position[0]);
                 System.out.println("FB y = "+ballInstance.position[1]);
-                scored = isScored();
+                if(isScored()==true){
+                    reportFlag = 1;
+                }
+                else{
+                    reportFlag = 2;
+                }
                 System.out.println("Entered1");
                 movementOne = false;
                 movementTwo = true;
             }
         }
         if (movementTwo) {
+//            goalkeeper.position = new int[]{400,250};
+//            ballInstance.position = new int[]{400,250};
             goalkeeper.changePosition(new int[]{400, 250});
-            ballInstance.changePosition(new int[]{430, 500});
+//            ballInstance.changePosition(new int[]{430, 500});
+            ballInstance.position = new int[]{430, 500};
             boolean a = (goalkeeper.isInRange(new int[]{400, 250}, new int[]{4, 4}, 0) && goalkeeper.isInRange(new int[]{400, 250}, new int[]{4, 4}, 1));
             boolean b = (ballInstance.isInRange(new int[]{430, 500}, new int[]{5, 5}, 0) && ballInstance.isInRange(new int[]{430, 500}, new int[]{5, 5}, 1));
             if (a && b) {
-                int temp[] = {rnd.nextInt(800 - 200) + 200, 250};
-                int temp2[] = {rnd.nextInt(800 - 200)+ 200, rnd.nextInt(450 - 250) + 250};
+                int temp[] = {rnd.nextInt(800 - 100) + 100, 250};
+                int temp2[] = {rnd.nextInt(800 - 100)+ 100, rnd.nextInt(450 - 250) + 250};
                 gk = temp;
                 fb = temp2;
                 movementOne = true;
@@ -95,26 +105,32 @@ public class PlayersMovement {
                  movementTwo = false;
              }
          }
+         if(isScored() == true){
+             reportFlag = 1;
+         }
      }
      public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_RIGHT){
-            this.ballInstance.position[0]+= 2;
+        e.setKeyCode(0);
+         if (key == KeyEvent.VK_RIGHT){
+            this.ballInstance.position[0]+= 5;
         }
-        else if (key == KeyEvent.VK_LEFT){
-            this.ballInstance.position[0]-= 2;
+        if (key == KeyEvent.VK_LEFT){
+            this.ballInstance.position[0]-= 5;
         }
-        else if (key == KeyEvent.VK_SPACE) {
-            this.ballInstance.changePosition(new int[]{ballInstance.position[0],450});
+        if (key == KeyEvent.VK_SPACE) {
+            this.ballInstance.velocity = new Double[]{6.0, 150.0};
+            this.ballInstance.changePosition(new int[]{ballInstance.position[0],100});
         }
      }
      public boolean isScored(){
-         boolean a = (goalkeeper.isInRange(ballInstance.position,goalkeeper.size, 0) && goalkeeper.isInRange(ballInstance.position, goalkeeper.size, 1));
-         boolean b = (ballInstance.isInRange(goalkeeper.position, ballInstance.size, 0) && ballInstance.isInRange(goalkeeper.position, ballInstance.size, 1));
-         if (a && b){
-             return false;
+         boolean isInGoal = (ballInstance.isInRange(new int[]{450,100},new int[]{350,150},0)) &&  (ballInstance.isInRange(new int[]{450,300},new int[]{350,150},1));
+         boolean isBlocked = (ballInstance.isInRange(new int[]{goalkeeper.position[0]+goalkeeper.size[0]/2,goalkeeper.position[1]+goalkeeper.size[1]/2},new int[]{goalkeeper.size[0]/2,goalkeeper.size[1]/2},0))&&(ballInstance.isInRange(new int[]{goalkeeper.position[0]+goalkeeper.size[0]/2,goalkeeper.position[1]+goalkeeper.size[1]/2},new int[]{goalkeeper.size[0]/2,goalkeeper.size[1]/2},1));
+         System.out.println("Is in goal "+isInGoal);
+         if (isInGoal && !isBlocked){
+             return true;
          }
-         return true;
+         return false;
     }
 }
 

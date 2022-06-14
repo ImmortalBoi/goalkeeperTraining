@@ -18,12 +18,8 @@ public class BetterGUI {
     public Rectangle freePlayBtn = new Rectangle(width / 2 + 150, height / 2 + 350, 150, 50);
     public Rectangle quitBtn = new Rectangle(width / 2 + 350, height / 2 + 350, 150, 50);
 
-    JLabel playerView = new JLabel("");
-    JLabel player1Score = new JLabel("Player 1 Score: 0");
-    JLabel player2Score = new JLabel("Player 2 Score: 0");
-    JLabel player3Score = new JLabel("Player 3 Score: 0");
-    JLabel player4Score = new JLabel("Player 4 Score: 0");
-
+    String ingameText = "";
+    String goalText = "";
     Goalkeeper goalkeeper;
     FootballBall ballInstance;
 
@@ -56,7 +52,6 @@ public class BetterGUI {
     }
 
     public void runAutoPlay() {
-        frame.add(playerView);
         frame.add(new Animation(goalkeeper, ballInstance), BorderLayout.CENTER);
         frame.repaint();
     }
@@ -73,7 +68,6 @@ public class BetterGUI {
         PlayersMovement playersMovement;
 
         Animation(Goalkeeper goalkeeper, FootballBall ballInstance) {
-            frame.add(playerView);
             this.goalkeeper = goalkeeper;
             this.ballInstance = ballInstance;
             playersMovement = new PlayersMovement(goalkeeper, ballInstance);
@@ -94,7 +88,7 @@ public class BetterGUI {
         Animation(Goalkeeper goalkeeper) {
             this.goalkeeper = goalkeeper;
             this.ballInstance = BetterGUI.this.ballInstance;
-            timer = new Timer(30, new BetterGUI.Animation.moveListener());
+            timer = new Timer(10, new BetterGUI.Animation.moveListener());
             playersMovement = new PlayersMovement(goalkeeper, ballInstance);
             super.setLayout(new GridLayout(0, 1));
             timer.start();
@@ -104,22 +98,16 @@ public class BetterGUI {
         public void paintComponent(Graphics g) {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             if (state == STATE.FREEPLAY || state == STATE.AUTOPLAY) {
-                frame.addKeyListener(new keyInputs(playersMovement));
                 g.drawImage(spriteGoalKeeperStanding, goalkeeper.position[0], goalkeeper.position[1], this);
                 g.drawImage(ballImage, ballInstance.position[0], ballInstance.position[1], this);
-                playerView.setFont(new Font("Arial", Font.BOLD, 36));
-                player1Score.setFont(new Font("Arial", Font.BOLD, 36));
-                player2Score.setFont(new Font("Arial", Font.BOLD, 36));
-                player3Score.setFont(new Font("Arial", Font.BOLD, 36));
-                player4Score.setFont(new Font("Arial", Font.BOLD, 36));
-                playerView.setForeground(Color.white);
-                Dimension playerSize = playerView.getPreferredSize();
-                player1Score.setBounds(0, 100, playerSize.width, playerSize.height);
-                player2Score.setBounds(0, 200, playerSize.width, playerSize.height);
-                player3Score.setBounds(0, 300, playerSize.width, playerSize.height);
-                player4Score.setBounds(0, 400, playerSize.width, playerSize.height);
-                playerView.setSize(playerSize);
-                frame.add(playerView);
+                g.setFont(new Font("Arial", Font.BOLD, 36));
+                g.setColor(Color.white);
+                g.drawString(ingameText,10,50);
+                g.drawString(goalText,20,50);
+                System.out.println("Report flag: "+playersMovement.reportFlag);
+                if(playersMovement.reportFlag == 1 || playersMovement.reportFlag == 2){
+                    timer.stop();
+                }
                 frame.repaint();
             }
             if (state == STATE.MENU) {
@@ -148,10 +136,23 @@ public class BetterGUI {
             public void actionPerformed(ActionEvent e) {
                 if (state == STATE.AUTOPLAY) {
                     playersMovement.movement(playersMovement.goalkeeper, playersMovement.ballInstance, timer);
+                    if (playersMovement.reportFlag == 1){
+                        ingameText = "GOAL!";
+                    }
+                    else if(playersMovement.reportFlag == 2){
+                        ingameText = "BLOCKED!";
+                    }
                     frame.repaint();
                 }
                 if (state == STATE.FREEPLAY) {
                     playersMovement.singleMovement();
+                    frame.addKeyListener(new BetterGUI.Animation.keyInputs(playersMovement));
+                    if (playersMovement.reportFlag == 1){
+                        ingameText = "GOAL!";
+                    }
+                    else if(playersMovement.reportFlag == 2){
+                        ingameText = "BLOCKED!";
+                    }
                     frame.repaint();
                 }
             }
@@ -225,5 +226,6 @@ public class BetterGUI {
 
         }
     }
+
 }
 
